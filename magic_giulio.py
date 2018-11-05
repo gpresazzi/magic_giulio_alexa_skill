@@ -36,7 +36,11 @@ class LaunchRequestHandler(AbstractRequestHandler):
         return handler_input.response_builder.response
 
 
+name_slot_female = "Ilaria"
+name_slot_male = "Giulio"
+
 class BravaIlariaIntentHandler(AbstractRequestHandler):
+
     """Handler for BravaIlaria Intent."""
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
@@ -45,17 +49,30 @@ class BravaIlariaIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
 
-        response = ["Ilaria è bravissima !",
-                    "Come si farebbe senza Ilaria !",
-                    "Nessuno è piu bravo di Ilaria.",
-                    "Magic Giulio ha occhi solo per ilaria"]
+        slots = handler_input.request_envelope.request.intent.slots
+        logger.log(logging.INFO, "Slots = " + str(slots))
 
-        speech_text = random.choice(response)
+        if name_slot_female in slots and slots[name_slot_female].value is not None:
+            name = slots[name_slot_female].value
+            logger.log(logging.INFO, "Slot [" + name_slot_female + "] = " + name)
+            if name.lower() == "ilaria":
+                response = ["Ilaria è bravissima !",
+                            "Come si farebbe senza Ilaria !",
+                            "Nessuno è piu bravo di Ilaria.",
+                            "Magic Giulio ha occhi solo per ilaria"]
+                speech_text = random.choice(response)
+            else:
+                speech_text = "Sei brava, ma non sarai mai brava quanto Ilaria."
+        elif name_slot_male in slots and slots[name_slot_male].value is not None:
+            speech_text = "Magic Giulio non e' cosi' sensibile da fare complimenti a uomini"
+        else:
+            speech_text = "non pretendere che faccia complimenti a qualcuno senza nome !"
 
         handler_input.response_builder.speak(speech_text).set_card(
             SimpleCard("Magic Giulio <3 Ilaria", speech_text)).set_should_end_session(
             True)
         return handler_input.response_builder.response
+
 
 class CercaVoliIntentHandler(AbstractRequestHandler):
     """Handler for BravaIlaria Intent."""

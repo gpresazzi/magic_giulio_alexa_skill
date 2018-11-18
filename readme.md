@@ -7,10 +7,11 @@ magic_giulio.py -> functionalities
 
 1. Alexa skil defined: https://developer.amazon.com/alexa/console/ask
 2. AWS account with lambda defined
+3. Python 3.6+ installed on you local machine
 
 ### Setup
 
-If not installed, install virtualenv
+If not already installed, install virtualenv. Then follows the next steps.
 
 1. Install virtualenv
 

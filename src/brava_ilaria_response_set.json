@@ -1,0 +1,25 @@
+{
+  "BravaIlaria": {
+    "responses": [
+      "Ilaria è bravissima !",
+      "Come si farebbe senza Ilaria !",
+      "Nessuno è piu bravo di Ilaria.",
+      "Magic Giulio ha occhi solo per ilaria",
+      "Ilaria è la ragazza piu' bella che ci sia.",
+      "Ilaria e' la dottoressa piu' brava che ci sia.",
+      "Ma ilaria non sara stanca di sentire troppi complimenti ?"
+    ]
+  },
+  "BravaIlariaDonna": {
+    "responses": [
+      "Sei brava, ma non sarai mai brava quanto Ilaria.",
+      "Penso che non sia opportuno che Magic Giulio faccia complimenti ad altre ragazze"
+    ]
+  },
+  "BravaIlariaUomo": {
+    "responses": [
+      "Magic Giulio non è cosi' sensibile da fare complimenti a uomini!",
+      "Credo non sia carino da parte di Magic Giulio fare complimenti a ragazzi."
+    ]
+  }
+}

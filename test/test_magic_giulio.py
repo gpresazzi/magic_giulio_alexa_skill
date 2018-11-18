@@ -1,11 +1,19 @@
 import subprocess
 import re
+import json
+import os
 
 
-brava_response = ["Ilaria è bravissima !",
-                "Come si farebbe senza Ilaria !",
-                "Nessuno è piu bravo di Ilaria.",
-                "Magic Giulio ha occhi solo per ilaria"]
+def parseJson(filename):
+    __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+    with open(os.path.join(__location__, filename), encoding='utf-8') as data_file:
+        data = json.loads(data_file.read())
+        return data
+
+
+response_set = parseJson("../src/brava_ilaria_response_set.json")
+brava_response = response_set["BravaIlaria"]["responses"]
+
 
 def get_alexa_text_speak(function_name, json_event):
     list_of_commands = ['python-lambda-local', '-f', function_name, './src/magic_giulio.py',
@@ -39,18 +47,18 @@ def test_brava_ilaria():
     json='brava-ilaria-1.json'
     speak_response = get_alexa_text_speak('handler', json)
     print(speak_response)
-    assert speak_response in brava_response
+    assert speak_response in response_set["BravaIlaria"]["responses"]
 
 
 def test_brava_ilaria_donna():
     json='brava-ilaria-donna-1.json'
     speak_response = get_alexa_text_speak('handler', json)
     print(speak_response)
-    assert speak_response.lower() == "Sei brava, ma non sarai mai brava quanto Ilaria.".lower()
+    assert speak_response in response_set["BravaIlariaDonna"]["responses"]
 
 
 def test_brava_ilaria_uomo():
     json='brava-ilaria-uomo-1.json'
     speak_response = get_alexa_text_speak('handler', json)
     print(speak_response)
-    assert speak_response.lower() == "magic giulio non e' cosi' sensibile da fare complimenti a uomini".lower()
+    assert speak_response in response_set["BravaIlariaUomo"]["responses"]

@@ -4,6 +4,7 @@
 # the implementation of handler classes approach in skill builder.
 import logging
 import random
+from magic_giulio_response_set import parseJson
 
 from ask_sdk_core.skill_builder import SkillBuilder
 from ask_sdk_core.dispatch_components import AbstractRequestHandler
@@ -18,6 +19,8 @@ sb = SkillBuilder()
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
+
+response_set = parseJson("./brava_ilaria_response_set.json")
 
 
 class LaunchRequestHandler(AbstractRequestHandler):
@@ -57,15 +60,14 @@ class BravaIlariaIntentHandler(AbstractRequestHandler):
             name = slots[name_slot_female].value
             logger.log(logging.INFO, "Slot [" + name_slot_female + "] = " + name)
             if name.lower() == "ilaria":
-                response = ["Ilaria è bravissima !",
-                            "Come si farebbe senza Ilaria !",
-                            "Nessuno è piu bravo di Ilaria.",
-                            "Magic Giulio ha occhi solo per ilaria"]
-                speech_text = random.choice(response)
+                responses = response_set["BravaIlaria"]["responses"]
+                speech_text = random.choice(responses)
             else:
-                speech_text = "Sei brava, ma non sarai mai brava quanto Ilaria."
+                responses = response_set["BravaIlariaDonna"]["responses"]
+                speech_text = random.choice(responses)
         elif name_slot_male in slots and slots[name_slot_male].value is not None:
-            speech_text = "Magic Giulio non e' cosi' sensibile da fare complimenti a uomini"
+            responses = response_set["BravaIlariaUomo"]["responses"]
+            speech_text = random.choice(responses)
         else:
             speech_text = "non pretendere che faccia complimenti a qualcuno senza nome !"
 

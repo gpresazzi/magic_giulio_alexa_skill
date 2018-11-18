@@ -39,6 +39,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
 name_slot_female = "Ilaria"
 name_slot_male = "Giulio"
 
+
 class BravaIlariaIntentHandler(AbstractRequestHandler):
 
     """Handler for BravaIlaria Intent."""

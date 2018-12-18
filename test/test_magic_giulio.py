@@ -18,7 +18,7 @@ brava_response = response_set["BravaIlaria"]["responses"]
 def get_alexa_text_speak(function_name, json_event):
     list_of_commands = ['python-lambda-local', '-f', function_name, './src/magic_giulio.py',
                                        './test/test-json/' + json_event]
-    process = subprocess.check_output(list_of_commands, timeout=2)
+    process = subprocess.check_output(list_of_commands, timeout=60)
     result_string = 'RESULT:'
     out = process.decode('UTF-8')
     response_array = out.split('[root')

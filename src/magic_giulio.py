@@ -5,6 +5,9 @@
 import logging
 import random
 from magic_giulio_response_set import parseJson
+import requests
+import csv
+import os.path
 
 from ask_sdk_core.skill_builder import SkillBuilder
 from ask_sdk_core.dispatch_components import AbstractRequestHandler
@@ -42,6 +45,11 @@ class LaunchRequestHandler(AbstractRequestHandler):
 name_slot_female = "Ilaria"
 name_slot_male = "Giulio"
 
+endpoint_domain = ""
+my_path = os.path.abspath(os.path.dirname(__file__))
+path = os.path.join(my_path, "endpoint.config")
+with open(path, 'r') as config:
+    endpoint_domain = config.read().replace('\n', '')
 
 class BravaIlariaIntentHandler(AbstractRequestHandler):
 
@@ -86,7 +94,28 @@ class CercaVoliIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
 
-        speech_text = "Questa funzione non è ancora implementata."
+        slots = handler_input.request_envelope.request.intent.slots
+        logger.log(logging.INFO, "Slots = " + str(slots))
+        cityA = "cityA"
+        cityB = "cityB"
+
+        if cityA in slots and slots[cityA].value is not None and cityB in slots and slots[cityB].value is not None:
+            #do search
+            logger.log(logging.INFO, "From: " + slots[cityA].value + " to: " + slots[cityB].value)
+
+            if endpoint_domain == "":
+                speech_text = "Non so dove cercare i prezzi dei voli. Contatta lo sviluppatore."
+            else:
+                url = endpoint_domain + "/api/v1/flight/" + slots[cityA].value + "/" + slots[cityB].value
+                logger.log(logging.INFO, "URL:" + url)
+                r = requests.get(url, timeout=30)
+                json_response = r.json()
+                logger.log(logging.INFO, json_response)
+                
+
+                speech_text = "Non sono ancora completa ... chiedi al mio sviluppatore di completarmi "
+        else:
+            speech_text = "Non ho capito quali sono le città da cui vuoi partire e arrivare."
 
         handler_input.response_builder.speak(speech_text).set_card(
             SimpleCard("Magic Giulio - voli", speech_text)).set_should_end_session(
